@@ -23,13 +23,16 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getTotalStudents());
     }
 
-    @GetMapping("/average-age")
-    public ResponseEntity<Double> getAverageAge() {
-        return ResponseEntity.ok(studentService.getAverageAge());
-    }
-
     @GetMapping("/last-five")
     public ResponseEntity<List<Student>> getLastFiveStudents() {
         return ResponseEntity.ok(studentService.getLastFiveStudents());
+    }
+    @GetMapping("/students/names-starting-with-a")
+    public List<String> getStudentNamesStartingWithA() {
+        return studentService.getStudentsWithAName();
+    }
+    @GetMapping("/students/average-age")
+    public double getAverageAge() {
+        return studentService.getAverageAgeFromAll();
     }
 }

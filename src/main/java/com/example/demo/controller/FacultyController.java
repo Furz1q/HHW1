@@ -48,4 +48,8 @@ public class FacultyController {
         boolean deleted = facultyService.deleteFaculty(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+    @GetMapping("/faculties/longest-name")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
+    }
 }
