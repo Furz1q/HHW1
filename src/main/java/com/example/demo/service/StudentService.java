@@ -4,18 +4,14 @@ import com.example.demo.model.Student;
 import com.example.demo.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 @Service
 public class StudentService {
-
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
-
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -24,46 +20,40 @@ public class StudentService {
     }
 
     public long getTotalStudents() {
-        logger.info("Was invoked method for getting total number of students");
-        logger.debug("Calling studentRepository.countAllStudents()");
-        long total = studentRepository.countAllStudents();
-        logger.debug("Total students found: {}", total);
-        return total;
+        logger.info("Was invoked method for getting total students");
+        return studentRepository.countAllStudents();
     }
 
     public double getAverageAge() {
-        logger.info("Was invoked method for getting average age of students");
-        logger.debug("Calling studentRepository.findAverageAge()");
-        double avgAge = studentRepository.findAverageAge();
-        if (avgAge <= 0) {
-            logger.warn("Average age is calculated as zero or less, check student data");
-        }
-        logger.debug("Average age calculated: {}", avgAge);
-        return avgAge;
+        logger.info("Was invoked method for getting average age");
+        return studentRepository.findAverageAge();
     }
 
     public List<Student> getLastFiveStudents() {
         logger.info("Was invoked method for getting last five students");
-        logger.debug("Calling studentRepository.findLastFiveStudents()");
-        List<Student> students = studentRepository.findLastFiveStudents();
-        if (students.isEmpty()) {
-            logger.warn("No students found when retrieving the last five students");
-        } else {
-            logger.debug("Last five students retrieved: {}", students);
-        }
-        return students;
+        return studentRepository.findLastFiveStudents();
     }
+
     public List<String> getStudentsWithAName() {
+        logger.info("Was invoked method for getting students with name starting with A");
         return studentRepository.findAll().stream()
-                .map(student -> student.getName().toUpperCase())
-                .filter(name -> name.startsWith("A"))
+                .map(Student::getName)
+                .filter(name -> name != null && name.toUpperCase().startsWith("А"))
+                .map(String::toUpperCase)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
+
     public double getAverageAgeFromAll() {
+        logger.info("Was invoked method for getting average age from all students");
         return studentRepository.findAll().stream()
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0.0);
+    }
+
+    public List<Student> getAllStudents() {
+        logger.info("Was invoked method to get all students");
+        return studentRepository.findAll();
     }
 }
