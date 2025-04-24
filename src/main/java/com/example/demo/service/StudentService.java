@@ -56,4 +56,55 @@ public class StudentService {
         logger.info("Was invoked method to get all students");
         return studentRepository.findAll();
     }
+    public void printStudentsParallel() {
+        List<Student> students = getAllStudents();
+        if (students.size() < 6) {
+            System.out.println("Not enough students in the list");
+            return;
+        }
+
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+    public void printStudentsSynchronized() {
+        List<Student> students = getAllStudents();
+        if (students.size() < 6) {
+            System.out.println("Not enough students in the list");
+            return;
+        }
+
+        synchronizedPrint(students.get(0).getName());
+        synchronizedPrint(students.get(1).getName());
+
+        Thread thread1 = new Thread(() -> {
+            synchronizedPrint(students.get(2).getName());
+            synchronizedPrint(students.get(3).getName());
+        });
+
+        Thread thread2 = new Thread(() -> {
+            synchronizedPrint(students.get(4).getName());
+            synchronizedPrint(students.get(5).getName());
+        });
+
+        thread1.start();
+        thread2.start();
+    }
+
+    private synchronized void synchronizedPrint(String name) {
+        System.out.println(name);
+    }
 }
