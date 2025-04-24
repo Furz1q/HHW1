@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.Student;
 import com.example.demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 public class StudentController {
+
     private final StudentService studentService;
 
     @Autowired
@@ -19,17 +19,32 @@ public class StudentController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Long> getTotalStudents() {
-        return ResponseEntity.ok(studentService.getTotalStudents());
-    }
-
-    @GetMapping("/average-age")
-    public ResponseEntity<Double> getAverageAge() {
-        return ResponseEntity.ok(studentService.getAverageAge());
+    public long getTotalStudents() {
+        return studentService.getTotalStudents();
     }
 
     @GetMapping("/last-five")
-    public ResponseEntity<List<Student>> getLastFiveStudents() {
-        return ResponseEntity.ok(studentService.getLastFiveStudents());
+    public List<Student> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("/names-starting-with-a")
+    public List<String> getStudentNamesStartingWithA() {
+        return studentService.getStudentsWithAName();
+    }
+
+    @GetMapping("/average-age")
+    public double getAverageAge() {
+        return studentService.getAverageAgeFromAll();
+    }
+
+    @GetMapping("/print-parallel")
+    public void printStudentsParallel() {
+        studentService.printStudentsParallel();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printStudentsSynchronized() {
+        studentService.printStudentsSynchronized();
     }
 }
